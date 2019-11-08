@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shaky_rps/ui/screen/game.dart';
 
-void main() => runApp(ShakingRpsApp());
+void main() {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  return runApp(ShakingRpsApp());
+}
 
 class ShakingRpsApp extends StatelessWidget {
   @override
