@@ -20,7 +20,7 @@ class ShakeResultModes {
         ShakeResult(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
         ShakeResult(icon: FontAwesomeIcons.handScissors, text: 'Scissors')
       ],
-      ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'));
+      ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Classic mode'));
 
   static ShakeResultMode spock = ShakeResultMode(
       'spock',
@@ -31,7 +31,8 @@ class ShakeResultModes {
         ShakeResult(icon: FontAwesomeIcons.handSpock, text: 'Spock'),
         ShakeResult(icon: FontAwesomeIcons.handLizard, text: 'Lizard')
       ],
-      ShakeResult(icon: FontAwesomeIcons.handSpock, text: 'Spock'));
+      ShakeResult(
+          icon: FontAwesomeIcons.handSpock, text: 'Spock and Lizad mode'));
 
   static ShakeResultMode dice = ShakeResultMode(
       'dice',
@@ -43,7 +44,7 @@ class ShakeResultModes {
         ShakeResult(icon: FontAwesomeIcons.diceFive, text: 'Five'),
         ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Six'),
       ],
-      ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Six'));
+      ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Dice mode'));
 
   static Map<String, ShakeResultMode> getModes() {
     var result = Map<String, ShakeResultMode>();
