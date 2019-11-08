@@ -59,7 +59,7 @@ class SourceSelector extends StatelessWidget {
         child: RaisedButton(
           onPressed: () => onChanged(mode),
           color: color,
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
           shape: RoundedRectangleBorder(borderRadius: radius),
           child: Icon(
             mode.icon.icon,
