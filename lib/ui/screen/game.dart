@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shakey_rps/ui/widget/shake_randomizer.dart';
-import 'package:shakey_rps/ui/widget/source_selector.dart';
+import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
+import 'package:shaky_rps/ui/widget/source_selector.dart';
 
 class Game extends StatefulWidget {
   @override

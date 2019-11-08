@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shakey_rps/ui/screen/game.dart';
+import 'package:shaky_rps/ui/screen/game.dart';
 
 void main() => runApp(ShakingRpsApp());
 

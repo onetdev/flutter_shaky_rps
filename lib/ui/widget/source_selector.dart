@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shakey_rps/ui/widget/shake_randomizer.dart';
+import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
 
 typedef SourceOnChangedCallback = Function(ShakeResultMode mode);
 

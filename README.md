@@ -1,4 +1,4 @@
-# shakey_rps
+# shaky_rps
 
 A new Flutter project.
 

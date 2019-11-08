@@ -1,4 +1,4 @@
-package com.example.shakey_rps
+package com.onetdev.shaky_rps
 
 import android.os.Bundle
 
