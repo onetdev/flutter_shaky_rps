@@ -33,7 +33,7 @@ class _Game extends State<Game> {
         appBar:
             AppBar(backgroundColor: Color(0xff27364e), elevation: 0, actions: [
           Container(
-              padding: EdgeInsets.only(right: 30),
+              padding: EdgeInsets.only(right: 20),
               child: IconButton(
                 icon: Icon(FontAwesomeIcons.info),
                 onPressed: () => onHelp(),
