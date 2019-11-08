@@ -20,16 +20,22 @@ class _Game extends State<Game> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      decoration: BoxDecoration(color: const Color(0xff27364e)),
-      child: SafeArea(
-          child: Column(children: [
-        Expanded(child: ShakeRandomizer(_mode), flex: 3),
-        Expanded(
+          color: const Color(0xff27364e),
+          child: SafeArea(
+            child: ShakeRandomizer(_mode),
+          ),
+        ),
+        bottomNavigationBar: Container(
+            //color: const Color(0xff27364e),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [const Color(0xff27364e), const Color(0xff1f2b3e)],
+            )),
             child: SourceSelector(
-          mode: _mode,
-          onChanged: (mode) => onModeChange(mode),
-        ))
-      ])),
-    ));
+              mode: _mode,
+              onChanged: (mode) => onModeChange(mode),
+            )));
   }
 }

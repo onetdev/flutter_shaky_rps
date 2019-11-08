@@ -79,12 +79,6 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
   Timer _stopTimer;
 
   @override
-  void didChangeDependencies() {
-    print('WHO');
-    super.didChangeDependencies();
-  }
-
-  @override
   void initState() {
     _detector = ShakeDetector.autoStart(
         onPhoneShake: () => onShake(), shakeSlopTimeMS: 300);
