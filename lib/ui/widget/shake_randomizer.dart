@@ -4,10 +4,59 @@ import 'package:shake/shake.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
-enum ShakeRandomizerMode { classic, spock, dice }
+class ShakeResultMode {
+  const ShakeResultMode(this.name, this.items, this.icon);
 
-class RollValue {
-  RollValue({this.icon, this.text});
+  final String name;
+  final List<ShakeResult> items;
+  final ShakeResult icon;
+}
+
+class ShakeResultModes {
+  static ShakeResultMode classic = ShakeResultMode(
+      'classic',
+      [
+        ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'),
+        ShakeResult(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
+        ShakeResult(icon: FontAwesomeIcons.handScissors, text: 'Scissors')
+      ],
+      ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'));
+
+  static ShakeResultMode spock = ShakeResultMode(
+      'spock',
+      [
+        ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'),
+        ShakeResult(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
+        ShakeResult(icon: FontAwesomeIcons.handScissors, text: 'Scissors'),
+        ShakeResult(icon: FontAwesomeIcons.handSpock, text: 'Spock'),
+        ShakeResult(icon: FontAwesomeIcons.handLizard, text: 'Lizard')
+      ],
+      ShakeResult(icon: FontAwesomeIcons.handSpock, text: 'Spock'));
+
+  static ShakeResultMode dice = ShakeResultMode(
+      'dice',
+      [
+        ShakeResult(icon: FontAwesomeIcons.diceOne, text: 'One'),
+        ShakeResult(icon: FontAwesomeIcons.diceTwo, text: 'Two'),
+        ShakeResult(icon: FontAwesomeIcons.diceThree, text: 'Three'),
+        ShakeResult(icon: FontAwesomeIcons.diceFour, text: 'Four'),
+        ShakeResult(icon: FontAwesomeIcons.diceFive, text: 'Five'),
+        ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Six'),
+      ],
+      ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Six'));
+
+  static Map<String, ShakeResultMode> getModes() {
+    var result = Map<String, ShakeResultMode>();
+    result['classic'] = classic;
+    result['spock'] = spock;
+    result['dice'] = dice;
+
+    return result;
+  }
+}
+
+class ShakeResult {
+  ShakeResult({this.icon, this.text});
 
   final IconData icon;
   final String text;
@@ -16,7 +65,7 @@ class RollValue {
 class ShakeRandomizer extends StatefulWidget {
   ShakeRandomizer(this.mode, {Key key}) : super(key: key);
 
-  final ShakeRandomizerMode mode;
+  final ShakeResultMode mode;
 
   @override
   _ShakeRandomizer createState() => _ShakeRandomizer();
@@ -25,9 +74,15 @@ class ShakeRandomizer extends StatefulWidget {
 class _ShakeRandomizer extends State<ShakeRandomizer> {
   bool _shaking = false;
   math.Random _random = new math.Random();
-  RollValue _lastRoll;
+  ShakeResult _lastRoll;
   ShakeDetector _detector;
   Timer _stopTimer;
+
+  @override
+  void didChangeDependencies() {
+    print('WHO');
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -37,7 +92,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
     super.initState();
   }
 
-  onShake() {
+  void onShake() {
     setState(() {
       _lastRoll = null;
       _shaking = true;
@@ -46,27 +101,24 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
     });
   }
 
-  onShakeStop() {
+  void onShakeStop() {
     setState(() {
       _stopTimer = null;
       _shaking = false;
-      int result = _random.nextInt(3);
-      print(result);
-      if (result == 0)
-        _lastRoll =
-            RollValue(icon: FontAwesomeIcons.solidHandRock, text: 'Rock');
-      if (result == 1)
-        _lastRoll =
-            RollValue(icon: FontAwesomeIcons.solidHandPaper, text: 'Paper');
-      if (result == 2)
-        _lastRoll = RollValue(
-            icon: FontAwesomeIcons.solidHandScissors, text: 'Scissors');
+      int result = _random.nextInt(widget.mode.items.length);
+      _lastRoll = widget.mode.items[result];
+    });
+  }
+
+  void onResultTap() {
+    setState(() {
+      _lastRoll = null;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, constraints) {
+    return LayoutBuilder(builder: (context, constraints) {
       Orientation currentOrientation = MediaQuery.of(context).orientation;
       if (currentOrientation == Orientation.portrait) {
         return Column(
@@ -84,19 +136,26 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
 
   Widget _buildInstruction() {
     return Text(
-      _shaking ? "OH BOI\nI'M SHAKING" : "Shake it bro",
-      style: TextStyle(fontSize: 50),
+      _shaking ? "Don't break me!" : "Shake me!",
+      style: TextStyle(
+          fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),
       textAlign: TextAlign.center,
     );
   }
 
   Widget _buildValue() {
-    return Icon(
-      _lastRoll?.icon,
-      color: Colors.red,
-      size: 80.0,
-      semanticLabel: _lastRoll?.text,
-    );
+    if (_lastRoll == null) {
+      return Container();
+    }
+
+    return GestureDetector(
+        onTap: () => onResultTap(),
+        child: Icon(
+          _lastRoll?.icon,
+          color: const Color(0xfff43960),
+          size: 80.0,
+          semanticLabel: _lastRoll?.text,
+        ));
   }
 
   @override
