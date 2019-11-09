@@ -1,19 +1,19 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shake/shake.dart';
-import 'dart:async';
-import 'dart:math' as math;
+import 'package:provider/provider.dart';
+import 'package:shaky_rps/controllers/shaker.dart';
 
-class ShakeResultMode {
-  const ShakeResultMode(this.name, this.items, this.icon);
+class ShakeGameSet {
+  const ShakeGameSet(this.name, this.items, this.icon);
 
   final String name;
   final List<ShakeResult> items;
   final ShakeResult icon;
 }
 
-class ShakeResultModes {
-  static ShakeResultMode classic = ShakeResultMode(
+class ShakeGameSets {
+  static ShakeGameSet classic = ShakeGameSet(
       'classic',
       [
         ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'),
@@ -22,7 +22,7 @@ class ShakeResultModes {
       ],
       ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Classic mode'));
 
-  static ShakeResultMode spock = ShakeResultMode(
+  static ShakeGameSet spock = ShakeGameSet(
       'spock',
       [
         ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'),
@@ -34,7 +34,7 @@ class ShakeResultModes {
       ShakeResult(
           icon: FontAwesomeIcons.handSpock, text: 'Spock and Lizad mode'));
 
-  static ShakeResultMode dice = ShakeResultMode(
+  static ShakeGameSet dice = ShakeGameSet(
       'dice',
       [
         ShakeResult(icon: FontAwesomeIcons.diceOne, text: 'One'),
@@ -46,8 +46,8 @@ class ShakeResultModes {
       ],
       ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Dice mode'));
 
-  static Map<String, ShakeResultMode> getModes() {
-    var result = Map<String, ShakeResultMode>();
+  static Map<String, ShakeGameSet> getModes() {
+    var result = Map<String, ShakeGameSet>();
     result['classic'] = classic;
     result['spock'] = spock;
     result['dice'] = dice;
@@ -66,7 +66,7 @@ class ShakeResult {
 class ShakeRandomizer extends StatefulWidget {
   ShakeRandomizer(this.mode, {Key key}) : super(key: key);
 
-  final ShakeResultMode mode;
+  final ShakeGameSet mode;
 
   @override
   _ShakeRandomizer createState() => _ShakeRandomizer();
@@ -76,29 +76,27 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
   bool _shaking = false;
   math.Random _random = new math.Random();
   ShakeResult _lastRoll;
-  ShakeDetector _detector;
-  Timer _stopTimer;
+  Shaker _shaker;
 
   @override
   void initState() {
-    _detector = ShakeDetector.autoStart(
-        onPhoneShake: () => onShake(), shakeSlopTimeMS: 300);
-
     super.initState();
+  }
+
+  void onShakeStateChange() {
+    if (_shaker.status == ShakeStatus.shaking) onShake();
+    if (_shaker.status == ShakeStatus.standing) onShakeStop();
   }
 
   void onShake() {
     setState(() {
-      _lastRoll = null;
       _shaking = true;
-      _stopTimer?.cancel();
-      _stopTimer = Timer(Duration(milliseconds: 300), () => onShakeStop());
+      _lastRoll = null;
     });
   }
 
   void onShakeStop() {
     setState(() {
-      _stopTimer = null;
       _shaking = false;
       int result = _random.nextInt(widget.mode.items.length);
       _lastRoll = widget.mode.items[result];
@@ -113,6 +111,8 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
 
   @override
   Widget build(BuildContext context) {
+    _shaker = Provider.of<Shaker>(context);
+
     return LayoutBuilder(builder: (context, constraints) {
       Orientation currentOrientation = MediaQuery.of(context).orientation;
       if (currentOrientation == Orientation.portrait) {
@@ -133,7 +133,10 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
     return Text(
       _shaking ? "Don't break me!" : "Shake me!",
       style: TextStyle(
-          fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),
+        fontSize: 50,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
       textAlign: TextAlign.center,
     );
   }
@@ -155,7 +158,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
 
   @override
   void dispose() {
-    _detector?.stopListening();
+    _shaker?.removeListener(onShakeStateChange);
     super.dispose();
   }
 }

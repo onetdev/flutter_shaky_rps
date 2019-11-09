@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
 
-typedef SourceOnChangedCallback = Function(ShakeResultMode mode);
+typedef SourceOnChangedCallback = Function(ShakeGameSet mode);
 
 class SourceSelector extends StatelessWidget {
   @override
   SourceSelector({Key key, this.onChanged, this.mode}) : super(key: key);
 
   final SourceOnChangedCallback onChanged;
-  final ShakeResultMode mode;
+  final ShakeGameSet mode;
 
   @override
   Widget build(BuildContext context) {
     var icons = List<Widget>();
     int _index = 0;
-    var modes = ShakeResultModes.getModes();
+    var modes = ShakeGameSets.getModes();
 
     modes.forEach((name, elem) {
       int _position = _index == 0 ? -1 : (_index == modes.length - 1 ? 1 : 0);
@@ -32,7 +32,7 @@ class SourceSelector extends StatelessWidget {
   /// Mode contains all the metadata for a given randomized mode
   /// Position is a value between [-1...1), -1 means first on the left,
   /// 0 means in the middle somewhere and 1 means on the right.
-  Widget _buildItem(ShakeResultMode mode, int position) {
+  Widget _buildItem(ShakeGameSet mode, int position) {
     Color color;
     Color textColor;
     BorderRadius radius;
