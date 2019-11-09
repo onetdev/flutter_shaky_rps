@@ -58,7 +58,7 @@ class _Game extends State<Game> {
             child: ShakeRandomizer(_gameSet)),
         bottomNavigationBar: _buildBottom(),
       ),
-      _shaker?.status != ShakeStatus.shaking
+      _shaker?.status != ShakeStatus.active
           ? Container()
           : _buildFlashingOverlay(deviceSize),
     ]);
@@ -114,7 +114,7 @@ class _Game extends State<Game> {
 
   /// Opens the help modal for a specific platform.
   /// Only iOS and Android is supported at the moment and nothing will happen
-  /// for unknown platorms.
+  /// for unknown platforms.
   void showHelp() {
     if (Platform.isAndroid) _showMaterialDialog();
     if (Platform.isIOS) _showCupertinoDialog();
