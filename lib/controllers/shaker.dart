@@ -42,7 +42,6 @@ class Shaker with ChangeNotifier {
 
   /// Updates status and notify all listeners.
   _updateStatus(ShakeStatus status) {
-    print('update  -- ' + status.toString());
     _status = status;
     notifyListeners();
   }
@@ -50,7 +49,6 @@ class Shaker with ChangeNotifier {
   /// Captures events from shake detector and if it's not in cooldown period nor
   /// stopped will schedule the timer shake end.
   void _onShake() {
-    print('INCOMING SHAKE -- ' + status.toString());
     if (status != ShakeStatus.idle && status != ShakeStatus.active) return;
 
     _stopTimer?.cancel();
