@@ -25,6 +25,7 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
 
     shaker = new Shaker(cooldown: Duration(seconds: 1));
     shaker.init();
+
     WidgetsBinding.instance.addObserver(this);
   }
 

@@ -85,7 +85,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
 
   void onShakeStateChange() {
     if (_shaker.status == ShakeStatus.active) onShake();
-    if (_shaker.status == ShakeStatus.inactive) onShakeStop();
+    if (_shaker.status == ShakeStatus.idle) onShakeStop();
   }
 
   void onShake() {
