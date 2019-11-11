@@ -1,6 +1,6 @@
 import 'dart:async';
 import "package:flutter/material.dart";
-import 'package:shaky_rps/controllers/shake_detector.dart';
+import 'package:shaky_rps/utils/shake_detector.dart';
 
 typedef ShakeStatusCallback = Function(ShakeStatus status);
 
@@ -17,7 +17,7 @@ enum ShakeStatus { idle, active, cooldown, stopped }
 class Shaker with ChangeNotifier {
   Shaker({
     this.cooldown = const Duration(milliseconds: 1000),
-    this.timeout = const Duration(milliseconds: 200),
+    this.timeout = const Duration(milliseconds: 300),
   });
 
   /// Cooldown after a shake if considered "complete"
@@ -35,13 +35,14 @@ class Shaker with ChangeNotifier {
   Timer _cooldownTimer;
 
   init() async {
-    _detector = ShakeDetector(_onShake);
+    _detector = ShakeDetector(() => _onShake());
     start();
     _updateStatus(ShakeStatus.idle);
   }
 
   /// Updates status and notify all listeners.
   _updateStatus(ShakeStatus status) {
+    print('update  -- ' + status.toString());
     _status = status;
     notifyListeners();
   }
@@ -49,7 +50,8 @@ class Shaker with ChangeNotifier {
   /// Captures events from shake detector and if it's not in cooldown period nor
   /// stopped will schedule the timer shake end.
   void _onShake() {
-    if (status == ShakeStatus.cooldown || status == ShakeStatus.stopped) return;
+    print('INCOMING SHAKE -- ' + status.toString());
+    if (status != ShakeStatus.idle && status != ShakeStatus.active) return;
 
     _stopTimer?.cancel();
     _stopTimer = Timer(timeout, () => _onStop());

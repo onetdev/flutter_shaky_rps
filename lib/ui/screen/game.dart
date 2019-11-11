@@ -66,7 +66,7 @@ class _Game extends State<Game> {
 
   void onShakerStateChange() {
     setState(() {
-      print('game.dart - updating state' + _shaker.status.toString());
+      /// This will schedule a redraw
     });
   }
 

@@ -73,7 +73,6 @@ class ShakeRandomizer extends StatefulWidget {
 }
 
 class _ShakeRandomizer extends State<ShakeRandomizer> {
-  bool _shaking = false;
   math.Random _random = new math.Random();
   ShakeResult _lastRoll;
   Shaker _shaker;
@@ -84,21 +83,10 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
   }
 
   void onShakeStateChange() {
-    if (_shaker.status == ShakeStatus.active) onShake();
-    if (_shaker.status == ShakeStatus.idle) onShakeStop();
-  }
+    if (_shaker.status != ShakeStatus.cooldown) return;
 
-  void onShake() {
+    int result = _random.nextInt(widget.mode.items.length);
     setState(() {
-      _shaking = true;
-      _lastRoll = null;
-    });
-  }
-
-  void onShakeStop() {
-    setState(() {
-      _shaking = false;
-      int result = _random.nextInt(widget.mode.items.length);
       _lastRoll = widget.mode.items[result];
     });
   }
@@ -112,6 +100,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
   @override
   Widget build(BuildContext context) {
     _shaker = Provider.of<Shaker>(context);
+    _shaker.addListener(onShakeStateChange);
 
     return LayoutBuilder(builder: (context, constraints) {
       Orientation currentOrientation = MediaQuery.of(context).orientation;
@@ -131,7 +120,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
 
   Widget _buildInstruction() {
     return Text(
-      _shaking ? "Don't break me!" : "Shake me!",
+      "Shake me!",
       style: TextStyle(
         fontSize: 50,
         color: Colors.white,

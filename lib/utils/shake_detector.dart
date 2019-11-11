@@ -58,8 +58,8 @@ class ShakeDetector {
 /// Queue of samples. Keeps a running average.
 class SampleQueue {
   /// Window size in microseconds. Used to compute the average.
-  static final int _maxWindowSize = 5000000; // 0.5s
-  static final int _minWindowSize = _maxWindowSize >> 1; // 0.25s
+  static final int _maxWindowSize = 250000; // 0.25s
+  static final int _minWindowSize = _maxWindowSize >> 1; // half of max
 
   /// Ensure the queue size never falls below this size, even if the device
   /// fails to deliver this many events during the time window.
