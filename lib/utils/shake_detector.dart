@@ -8,7 +8,7 @@ import 'package:sensors/sensors.dart';
 /// accelerating, the device is a) shaking, or b) free falling 1.84m (h =
 /// 1/2*g*t^2*3/4).
 class ShakeDetector {
-  ShakeDetector(this.onShake);
+  ShakeDetector(this.onShake, {this.statsEnabled = true});
 
   static final sensitivityLight = 11;
   static final sensitivityMedium = 13;
@@ -20,16 +20,25 @@ class ShakeDetector {
   /// value, the phone is accelerating.
   var _accelerationThreshold = defaultAccelerationThreshold;
 
-  final SampleQueue _queue = new SampleQueue();
   final Function onShake;
+  bool statsEnabled;
+
+  final SampleQueue _queue = new SampleQueue();
+  SampleStats _stats;
   StreamSubscription<UserAccelerometerEvent> _listener;
+
+  SampleStats get stats => _stats;
 
   start() {
     stop();
+    if (statsEnabled) {
+      _stats = SampleStats();
+    }
     _listener = userAccelerometerEvents.listen(onAccelerometerEvent);
   }
 
   stop() {
+    _stats = null;
     _listener?.cancel();
   }
 
@@ -41,6 +50,8 @@ class ShakeDetector {
       if (onShake != null) onShake();
       _queue.clear();
     }
+
+    _stats.increment(accelerating);
   }
 
   /// Returns true if the device is currently accelerating.
@@ -52,6 +63,33 @@ class ShakeDetector {
     final double magnitudeSquared =
         event.x * event.x + event.y * event.y + event.z * event.z;
     return magnitudeSquared > _accelerationThreshold * _accelerationThreshold;
+  }
+}
+
+class SampleStats {
+  /// Optional [startTime] in microseconds.
+  SampleStats({int startTime})
+      : this._startTime = DateTime.now().microsecondsSinceEpoch;
+
+  int _total = 0;
+  int _acceleration = 0;
+  int _startTime = 0;
+
+  double get elapsedTime {
+    return (DateTime.now().microsecondsSinceEpoch - _startTime).toDouble();
+  }
+
+  double get avg => _total / elapsedTime;
+
+  double get avgAcceleration => _acceleration / elapsedTime;
+
+  void increment(bool isAccelerating) {
+    _total++;
+    _acceleration += isAccelerating ? 1 : 0;
+  }
+
+  String toString() {
+    return "[avg: ${avg.toString()}, acceleration: ${avgAcceleration.toString()}, elapsed: ${elapsedTime.toString()}]";
   }
 }
 
