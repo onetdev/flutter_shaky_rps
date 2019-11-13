@@ -75,6 +75,7 @@ class ShakeRandomizer extends StatefulWidget {
 class _ShakeRandomizer extends State<ShakeRandomizer> {
   math.Random _random = new math.Random();
   ShakeResult _lastRoll;
+  bool _showRollResult = false;
   Shaker _shaker;
 
   @override
@@ -88,12 +89,13 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
     int result = _random.nextInt(widget.mode.items.length);
     setState(() {
       _lastRoll = widget.mode.items[result];
+      _showRollResult = true;
     });
   }
 
   void onResultTap() {
     setState(() {
-      _lastRoll = null;
+      _showRollResult = false;
     });
   }
 
@@ -104,45 +106,62 @@ class _ShakeRandomizer extends State<ShakeRandomizer> {
 
     return LayoutBuilder(builder: (context, constraints) {
       Orientation currentOrientation = MediaQuery.of(context).orientation;
+
+      Widget child;
       if (currentOrientation == Orientation.portrait) {
-        return Column(
+        child = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [_buildInstruction(), _buildValue()],
         );
       } else {
-        return Row(
+        child = Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [_buildInstruction(), _buildValue()],
         );
       }
+
+      return Container(
+        key: ValueKey('roll_container'),
+        child: child,
+      );
     });
   }
 
   Widget _buildInstruction() {
-    return Text(
-      "Shake me!",
-      style: TextStyle(
-        fontSize: 50,
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
+    return Container(
+      key: ValueKey('roll_text'),
+      child: Text(
+        "Shake me!",
+        style: TextStyle(
+          fontSize: 50,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
       ),
-      textAlign: TextAlign.center,
     );
   }
 
   Widget _buildValue() {
-    if (_lastRoll == null) {
-      return Container();
-    }
-
-    return GestureDetector(
-        onTap: () => onResultTap(),
-        child: Icon(
-          _lastRoll?.icon,
-          color: const Color(0xfff43960),
-          size: 80.0,
-          semanticLabel: _lastRoll?.text,
-        ));
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+      height: _showRollResult ? 80.0 : 0.0,
+      key: ValueKey('roll_icon_container'),
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 200),
+        opacity: _showRollResult ? 1.0 : 0.0,
+        child: GestureDetector(
+          onTap: () => onResultTap(),
+          child: Icon(
+            _lastRoll?.icon,
+            color: const Color(0xfff43960),
+            size: 80.0,
+            semanticLabel: _lastRoll?.text,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
