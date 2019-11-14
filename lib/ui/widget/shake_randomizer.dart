@@ -200,7 +200,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     if (_status == ShakeRandomizerStatus.BECOMING_VISIBLE) {
       sizeFactor = 4 - (3 * _resultInAnimation.value);
       opacityFactor = _resultInAnimation.value;
-      heightFactor = 1;
+      heightFactor = _resultInAnimation.value;
     } else if (_status == ShakeRandomizerStatus.BECOMING_INVISIBLE) {
       sizeFactor = 1;
       opacityFactor = 1 - _resultOutAnimation.value;
