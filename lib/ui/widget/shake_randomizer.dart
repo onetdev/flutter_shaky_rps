@@ -193,31 +193,39 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
   }
 
   Widget _buildValue() {
-    double sizeFactor = 1;
-    double opacityFactor = 1;
+    double sizeFactor = 0;
+    double opacityFactor = 0;
+    double heightFactor = 0;
+
     if (_status == ShakeRandomizerStatus.BECOMING_VISIBLE) {
       sizeFactor = 4 - (3 * _resultInAnimation.value);
       opacityFactor = _resultInAnimation.value;
+      heightFactor = 1;
     } else if (_status == ShakeRandomizerStatus.BECOMING_INVISIBLE) {
-      sizeFactor = 1 - _resultOutAnimation.value;
+      sizeFactor = 1;
       opacityFactor = 1 - _resultOutAnimation.value;
-    } else if (_status == ShakeRandomizerStatus.HIDDEN) {
-      sizeFactor = 0;
-      opacityFactor = 0;
+      heightFactor = 1 - _resultOutAnimation.value;
+    } else if (_status == ShakeRandomizerStatus.VISIBLE) {
+      sizeFactor = 1;
+      opacityFactor = 1;
+      heightFactor = 1;
     }
 
     return Transform.scale(
       scale: sizeFactor,
       key: ValueKey('roll_icon_container'),
-      child: Opacity(
-        opacity: opacityFactor,
-        child: GestureDetector(
-          onTap: () => onResultTap(),
-          child: Icon(
-            _lastRoll?.icon,
-            color: const Color(0xfff43960),
-            size: 80.0,
-            semanticLabel: _lastRoll?.text,
+      child: Container(
+        height: 80.0 * heightFactor,
+        child: Opacity(
+          opacity: opacityFactor,
+          child: GestureDetector(
+            onTap: () => onResultTap(),
+            child: Icon(
+              _lastRoll?.icon,
+              color: const Color(0xfff43960),
+              size: 80.0,
+              semanticLabel: _lastRoll?.text,
+            ),
           ),
         ),
       ),
