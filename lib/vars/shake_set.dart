@@ -43,6 +43,19 @@ class ShakeGameSets {
       ],
       ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Dice mode'));
 
+  static ShakeGameSet puff = ShakeGameSet(
+    'puff',
+    [
+      ShakeResult(icon: FontAwesomeIcons.asterisk, text: 'Asteriks'),
+      ShakeResult(icon: FontAwesomeIcons.meteor, text: 'Meteor'),
+      ShakeResult(icon: FontAwesomeIcons.bomb, text: 'Bomb'),
+      ShakeResult(icon: FontAwesomeIcons.cog, text: 'Cog'),
+      ShakeResult(icon: FontAwesomeIcons.fire, text: 'Fire'),
+      ShakeResult(icon: FontAwesomeIcons.snowflake, text: 'Snowflake'),
+    ],
+    ShakeResult(icon: FontAwesomeIcons.asterisk, text: 'Asteriks'),
+  );
+
   static Map<String, ShakeGameSet> getModes() {
     var result = Map<String, ShakeGameSet>();
     result['classic'] = classic;

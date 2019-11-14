@@ -1,14 +1,13 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:random_color/random_color.dart';
 import 'package:shaky_rps/controllers/shaker.dart';
+import 'package:shaky_rps/ui/screen/info.dart';
 import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
 import 'package:shaky_rps/ui/widget/source_selector.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Game extends StatefulWidget {
   @override
@@ -18,13 +17,6 @@ class Game extends StatefulWidget {
 class _Game extends State<Game> {
   ShakeGameSet _gameSet = ShakeGameSets.classic;
   Shaker _shaker;
-
-  static const Text helpTitle = Text("About & how to play");
-  static const Text helpContent = Text(
-      "Most importantly: Hold your device tightly because if you drop it we are not responsible.\n\n" +
-          "Just shake the phone and the result will be on your screen.\n" +
-          "To change the game mode, select one of the options from the bottom of the app.\n\n" +
-          "Ps: We don't collect any data about you also no ads for this time. Yet.");
 
   @override
   void initState() {
@@ -48,7 +40,7 @@ class _Game extends State<Game> {
               padding: EdgeInsets.only(right: 20),
               child: IconButton(
                 icon: Icon(FontAwesomeIcons.info),
-                onPressed: () => showHelp(),
+                onPressed: () => openHelp(context),
               ),
             )
           ],
@@ -69,6 +61,10 @@ class _Game extends State<Game> {
     setState(() {
       /// This will schedule a redraw
     });
+  }
+
+  void openHelp(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Info()));
   }
 
   /// This overlay will be shown if the phone is shaking.
@@ -111,74 +107,5 @@ class _Game extends State<Game> {
     setState(() {
       _gameSet = mode;
     });
-  }
-
-  /// Opens the help modal for a specific platform.
-  /// Only iOS and Android is supported at the moment and nothing will happen
-  /// for unknown platforms.
-  void showHelp() {
-    if (Platform.isAndroid) _showMaterialDialog();
-    if (Platform.isIOS) _showCupertinoDialog();
-  }
-
-  /// iOS specific modal display, has identical text as the android one.
-  void _showCupertinoDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: helpTitle,
-            content: helpContent,
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => _dismissDialog(),
-                child: Text('Close'),
-              ),
-              FlatButton(
-                onPressed: () {
-                  _sendEmail();
-                },
-                child: Text('Contact'),
-              )
-            ],
-          );
-        });
-  }
-
-  /// Android specific modal display, has identical text as the iOS one.
-  void _showMaterialDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: helpTitle,
-            content: helpContent,
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => _dismissDialog(),
-                child: Text('Close'),
-              ),
-              FlatButton(
-                onPressed: () => _sendEmail(),
-                child: Text('Contact'),
-              )
-            ],
-          );
-        });
-  }
-
-  /// Tries to open the OS's default mailer to send email to the owner of the app.
-  void _sendEmail() async {
-    const url = 'mailto:József Koller<contact@onetdev.com>';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  /// Hides the dialog on all platforms.
-  void _dismissDialog() {
-    Navigator.pop(context);
   }
 }

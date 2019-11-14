@@ -28,6 +28,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
 
   /// Holds the last result (even after type change.)
   ShakeResult _lastRoll;
+  List<ShakeResult> _lastRollRemainders;
 
   /// The current animation state of the UI.
   ShakeRandomizerStatus _status;
@@ -83,7 +84,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     );
     _resultOutAnimation = new CurvedAnimation(
       parent: _resultOutAnimationController,
-      curve: Curves.easeOut,
+      curve: Curves.bounceInOut,
     );
     _resultOutAnimation.addListener(() => setState(() {}));
     _resultOutAnimationController.addStatusListener((status) {
@@ -98,10 +99,10 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     /// from anything else.
     _particlesAnimationController = new AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: Duration(milliseconds: 500),
     );
     _particlesAnimation = new CurvedAnimation(
-        parent: _particlesAnimationController, curve: Curves.easeIn);
+        parent: _particlesAnimationController, curve: Curves.easeOut);
     _particlesAnimation.addListener(() => setState(() {}));
 
     /// Shake the instruction text for 1-3 times every 10-15 seconds.
@@ -158,6 +159,13 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     setState(() {
       _lastRoll = widget.mode.items[result];
       _particlesAngle = _random.nextDouble() * (2 * math.pi);
+      _lastRollRemainders =
+          widget.mode.items.where((mode) => mode != _lastRoll).toList();
+
+      if (_lastRollRemainders.length < 3) {
+        _lastRollRemainders.addAll(_lastRollRemainders.toList());
+      }
+
       _status = ShakeRandomizerStatus.BECOMING_VISIBLE;
       _resultInAnimationController.forward(from: 0.0);
     });
@@ -232,6 +240,48 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     );
   }
 
+  Widget _buildParticle() {
+    var widgets = List<Widget>();
+    widgets.add(SizedBox(width: 1, height: 1));
+
+    if (_lastRollRemainders == null) {
+      return Stack(
+        children: widgets,
+        overflow: Overflow.visible,
+      );
+    }
+
+    var firstAngle = _particlesAngle;
+    var particleRadius = (_particlesAnimation.value * 150);
+    var particleOpacity = 1 - _particlesAnimation.value;
+    var length = _lastRollRemainders.length;
+
+    _lastRollRemainders.asMap().forEach((index, mode) {
+      var currentAngle = (firstAngle + ((2 * math.pi) / length) * index);
+      widgets.add(
+        Positioned(
+          left: (particleRadius * math.cos(currentAngle)) + -15,
+          top: (particleRadius * math.sin(currentAngle)) + 30,
+          child: Transform.rotate(
+            angle: currentAngle - math.pi / 2,
+            child: Opacity(
+              opacity: particleOpacity,
+              child: Icon(
+                mode.icon,
+                color: const Color(0xfff43960),
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+
+    return Stack(
+      children: widgets,
+      overflow: Overflow.visible,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _shaker = Provider.of<Shaker>(context);
@@ -243,12 +293,12 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
       if (currentOrientation == Orientation.portrait) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [_buildInstruction(), _buildValue()],
+          children: [_buildInstruction(), _buildParticle(), _buildValue()],
         );
       } else {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [_buildInstruction(), _buildValue()],
+          children: [_buildInstruction(), _buildParticle(), _buildValue()],
         );
       }
     });

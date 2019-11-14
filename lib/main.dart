@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shaky_rps/controllers/shaker.dart';
 import 'package:shaky_rps/ui/screen/game.dart';
+import 'package:shaky_rps/ui/screen/info.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations(
@@ -60,6 +61,9 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
           primarySwatch: Colors.blue,
         ),
         home: Game(),
+        routes: <String, WidgetBuilder>{
+          '/info': (BuildContext context) => new Info(),
+        },
       ),
     );
   }
