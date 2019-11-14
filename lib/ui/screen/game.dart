@@ -7,6 +7,7 @@ import 'package:random_color/random_color.dart';
 import 'package:shaky_rps/controllers/shaker.dart';
 import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
 import 'package:shaky_rps/ui/widget/source_selector.dart';
+import 'package:shaky_rps/vars/shake_set.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Game extends StatefulWidget {
@@ -58,7 +59,7 @@ class _Game extends State<Game> {
             child: ShakeRandomizer(_gameSet)),
         bottomNavigationBar: _buildBottom(),
       ),
-      _shaker?.status != ShakeStatus.active
+      _shaker?.status != ShakeStatus.ACTIVE
           ? Container()
           : _buildFlashingOverlay(deviceSize),
     ]);

@@ -8,7 +8,7 @@ typedef ShakeStatusCallback = Function(ShakeStatus status);
 /// Active: Potentially ongoing shaking process
 /// Cooldown: Shake cannot be started while in this state.
 /// Stopped: Detection is halted
-enum ShakeStatus { idle, active, cooldown, stopped }
+enum ShakeStatus { IDLE, ACTIVE, COOLDOWN, STOPPED }
 
 /// Implements the shake logic for the application and lettings multiple
 /// subscribers know if device movement is detected.
@@ -29,7 +29,7 @@ class Shaker with ChangeNotifier {
 
   ShakeStatus get status => _status;
 
-  ShakeStatus _status = ShakeStatus.stopped;
+  ShakeStatus _status = ShakeStatus.STOPPED;
   ShakeDetector _detector;
   Timer _stopTimer;
   Timer _cooldownTimer;
@@ -37,7 +37,7 @@ class Shaker with ChangeNotifier {
   init() async {
     _detector = ShakeDetector(() => _onShake());
     start();
-    _updateStatus(ShakeStatus.idle);
+    _updateStatus(ShakeStatus.IDLE);
   }
 
   /// Updates status and notify all listeners.
@@ -49,12 +49,12 @@ class Shaker with ChangeNotifier {
   /// Captures events from shake detector and if it's not in cooldown period nor
   /// stopped will schedule the timer shake end.
   void _onShake() {
-    if (status != ShakeStatus.idle && status != ShakeStatus.active) return;
+    if (status != ShakeStatus.IDLE && status != ShakeStatus.ACTIVE) return;
 
     _stopTimer?.cancel();
     _stopTimer = Timer(timeout, () => _onStop());
 
-    _updateStatus(ShakeStatus.active);
+    _updateStatus(ShakeStatus.ACTIVE);
   }
 
   /// Schedule cooldown and update state as well
@@ -64,14 +64,14 @@ class Shaker with ChangeNotifier {
     _cooldownTimer?.cancel();
     _cooldownTimer = Timer(cooldown, () => _onCooldownReset());
 
-    _updateStatus(ShakeStatus.cooldown);
+    _updateStatus(ShakeStatus.COOLDOWN);
   }
 
   /// Set device to be ready for receiving shakes again.
   void _onCooldownReset() {
     _cooldownTimer = null;
 
-    _updateStatus(ShakeStatus.idle);
+    _updateStatus(ShakeStatus.IDLE);
   }
 
   /// Starts the detection
