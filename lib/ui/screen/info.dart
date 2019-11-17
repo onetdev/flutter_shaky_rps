@@ -14,7 +14,7 @@ class _Info extends State<Info> {
     Size deviceSize = MediaQuery.of(context).size;
 
     var headline = TextStyle(
-      color: Colors.white,
+      color: const Color(0xfff23861),
       fontSize: 25,
       fontWeight: FontWeight.bold,
     );
@@ -23,7 +23,7 @@ class _Info extends State<Info> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff27364e),
+        backgroundColor: Color(0xff1f2b3e),
         elevation: 0,
         actions: [
           Container(
@@ -36,7 +36,7 @@ class _Info extends State<Info> {
         ],
       ),
       body: Container(
-        color: const Color(0xff27364e),
+        color: const Color(0xff1f2b3e),
         width: deviceSize.width,
         height: deviceSize.height,
         child: ListView(padding:  EdgeInsets.symmetric(horizontal: 15), children: [
@@ -58,7 +58,7 @@ class _Info extends State<Info> {
             style: paragraph,
           ),
           Text(
-              "\nPs: We don't collect any data about you also no ads for this time. Yet.\n",
+              "\nPs: I don't collect any data about you.\n",
               style: paragraph),
         ]),
       ),

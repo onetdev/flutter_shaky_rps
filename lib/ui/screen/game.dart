@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:random_color/random_color.dart';
 import 'package:shaky_rps/controllers/shaker.dart';
 import 'package:shaky_rps/ui/screen/info.dart';
+import 'package:shaky_rps/ui/transition/reveal.dart';
 import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
 import 'package:shaky_rps/ui/widget/source_selector.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
@@ -64,7 +66,17 @@ class _Game extends State<Game> {
   }
 
   void openHelp(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Info()));
+    Size size = MediaQuery.of(context).size;
+    double diagonal = sqrt(pow(size.width, 2) + pow(size.height, 2));
+
+    Navigator.push(
+      context,
+      RevealRoute(
+        page: Info(),
+        centerAlignment: Alignment.topRight,
+        maxRadius: diagonal,
+      ),
+    );
   }
 
   /// This overlay will be shown if the phone is shaking.

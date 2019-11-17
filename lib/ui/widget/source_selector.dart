@@ -23,10 +23,12 @@ class SourceSelector extends StatelessWidget {
     });
 
     return Container(
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: icons));
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: icons,
+      ),
+    );
   }
 
   /// Mode contains all the metadata for a given randomized mode
@@ -55,18 +57,19 @@ class SourceSelector extends StatelessWidget {
     }
 
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 43, horizontal: 0),
-        child: RaisedButton(
-          onPressed: () => onChanged(mode),
-          color: color,
-          padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
-          shape: RoundedRectangleBorder(borderRadius: radius),
-          child: Icon(
-            mode.icon.icon,
-            color: textColor,
-            size: 30.0,
-            semanticLabel: mode.icon.text,
-          ),
-        ));
+      padding: EdgeInsets.symmetric(vertical: 43, horizontal: 0),
+      child: RaisedButton(
+        onPressed: () => onChanged(mode),
+        color: color,
+        padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
+        shape: RoundedRectangleBorder(borderRadius: radius),
+        child: Icon(
+          mode.icon.icon,
+          color: textColor,
+          size: 30.0,
+          semanticLabel: mode.icon.text,
+        ),
+      ),
+    );
   }
 }
