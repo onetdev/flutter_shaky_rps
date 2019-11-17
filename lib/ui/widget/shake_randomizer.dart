@@ -154,22 +154,25 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
   /// and various animation variables will be animated here too.
   void onShakeStateChange() {
     if (_shaker.status != ShakeStatus.COOLDOWN) return;
+    generateResult();
+  }
 
+  void clearResult() {
+    if (_status != ShakeRandomizerStatus.VISIBLE) return;
+
+    setState(() {
+      _status = ShakeRandomizerStatus.BECOMING_INVISIBLE;
+      _resultOutAnimationController.forward(from: 0);
+    });
+  }
+
+  void generateResult() {
     int result = _random.nextInt(widget.mode.items.length);
     setState(() {
       _lastRoll = widget.mode.items[result];
       seedParticles();
       _status = ShakeRandomizerStatus.BECOMING_VISIBLE;
       _resultInAnimationController.forward(from: 0.0);
-    });
-  }
-
-  void onResultTap() {
-    if (_status != ShakeRandomizerStatus.VISIBLE) return;
-
-    setState(() {
-      _status = ShakeRandomizerStatus.BECOMING_INVISIBLE;
-      _resultOutAnimationController.forward(from: 0);
     });
   }
 
@@ -193,14 +196,17 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
       key: ValueKey('roll_instruction'),
       child: Transform.rotate(
         angle: _wiggleAnimationController.value * 3 * math.pi / 180,
-        child: Text(
-          "Shake me!",
-          style: TextStyle(
-            fontSize: 50,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+        child: GestureDetector(
+          onTap: () => generateResult(),
+          child: Text(
+            _shaker.hasShakeSupport ? "Shake me!" : "Touch me!",
+            style: TextStyle(
+              fontSize: 50,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -233,7 +239,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
         child: Opacity(
           opacity: opacityFactor,
           child: GestureDetector(
-            onTap: () => onResultTap(),
+            onTap: () => clearResult(),
             child: Icon(
               _lastRoll?.icon,
               color: const Color(0xfff43960),
@@ -253,8 +259,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     /// Draw nothing when animation has ended of there is no particles to draw
     if (_shakeParticles == null ||
         _particlesAnimation.value == 1 ||
-        _particlesAnimation.value == 0)
-    {
+        _particlesAnimation.value == 0) {
       return Stack(
         children: widgets,
         overflow: Overflow.visible,
@@ -281,7 +286,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
               opacity: particleOpacity,
               child: Icon(
                 particle.item.icon,
-                color: const Color(0xfff43960),
+                color: const Color(0xffffffff),
                 size: 30 * (particle.seed + .3),
               ),
             ),

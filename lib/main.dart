@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,10 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
 
     shaker = new Shaker(cooldown: Duration(seconds: 1));
     shaker.init();
+
+    Timer(Duration(seconds: 1), () {
+      shaker.updateHasShakeSupport();
+    });
 
     WidgetsBinding.instance.addObserver(this);
   }

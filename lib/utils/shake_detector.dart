@@ -79,9 +79,11 @@ class SampleStats {
     return (DateTime.now().microsecondsSinceEpoch - _startTime).toDouble();
   }
 
-  double get avg => _total / elapsedTime;
+  /// Average event distance in microseconds.
+  double get avg => elapsedTime / _total;
 
-  double get avgAcceleration => _acceleration / elapsedTime;
+  /// Average acceleration events distance in microseconds.
+  double get avgAcceleration => elapsedTime / _acceleration;
 
   void increment(bool isAccelerating) {
     _total++;

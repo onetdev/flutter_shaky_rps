@@ -29,6 +29,9 @@ class Shaker with ChangeNotifier {
 
   ShakeStatus get status => _status;
 
+  bool get hasShakeSupport => _hasShakeSupport;
+
+  bool _hasShakeSupport = true;
   ShakeStatus _status = ShakeStatus.STOPPED;
   ShakeDetector _detector;
   Timer _stopTimer;
@@ -51,6 +54,7 @@ class Shaker with ChangeNotifier {
   void _onShake() {
     if (status != ShakeStatus.IDLE && status != ShakeStatus.ACTIVE) return;
 
+    updateHasShakeSupport();
     _stopTimer?.cancel();
     _stopTimer = Timer(timeout, () => _onStop());
 
@@ -72,6 +76,13 @@ class Shaker with ChangeNotifier {
     _cooldownTimer = null;
 
     _updateStatus(ShakeStatus.IDLE);
+  }
+
+  /// If the last event average for shake events is over 25Hz, then we consider
+  /// the device capable of detecting proper accelerations.
+  updateHasShakeSupport() {
+    _hasShakeSupport = _detector.stats.avg < 400000;
+    notifyListeners();
   }
 
   /// Starts the detection
