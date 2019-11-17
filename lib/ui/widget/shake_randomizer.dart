@@ -15,7 +15,7 @@ enum ShakeRandomizerStatus {
 class ShakeRandomizer extends StatefulWidget {
   ShakeRandomizer(this.mode, {Key key}) : super(key: key);
 
-  final ShakeGameSet mode;
+  final ShakeItemSet mode;
 
   @override
   _ShakeRandomizer createState() => _ShakeRandomizer();
@@ -27,8 +27,8 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
   math.Random _random;
 
   /// Holds the last result (even after type change.)
-  ShakeResult _lastRoll;
-  List<ShakeResult> _lastRollRemainders;
+  ShakeItem _lastRoll;
+  List<ShakeParticle> _shakeParticles;
 
   /// The current animation state of the UI.
   ShakeRandomizerStatus _status;
@@ -158,14 +158,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     int result = _random.nextInt(widget.mode.items.length);
     setState(() {
       _lastRoll = widget.mode.items[result];
-      _particlesAngle = _random.nextDouble() * (2 * math.pi);
-      _lastRollRemainders =
-          widget.mode.items.where((mode) => mode != _lastRoll).toList();
-
-      if (_lastRollRemainders.length < 3) {
-        _lastRollRemainders.addAll(_lastRollRemainders.toList());
-      }
-
+      seedParticles();
       _status = ShakeRandomizerStatus.BECOMING_VISIBLE;
       _resultInAnimationController.forward(from: 0.0);
     });
@@ -178,6 +171,19 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
       _status = ShakeRandomizerStatus.BECOMING_INVISIBLE;
       _resultOutAnimationController.forward(from: 0);
     });
+  }
+
+  /// Generates random particle angles and items.
+  seedParticles() {
+    var items = ShakeGameSets.particles.items;
+    var buffer = new List<ShakeParticle>();
+
+    items.forEach((item) {
+      buffer.add(ShakeParticle(item, _random.nextDouble()));
+    });
+
+    _particlesAngle = _random.nextDouble() * (2 * math.pi);
+    _shakeParticles = buffer;
   }
 
   /// This will show the instruction label above the results
@@ -244,7 +250,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     var widgets = List<Widget>();
     widgets.add(SizedBox(width: 1, height: 1));
 
-    if (_lastRollRemainders == null) {
+    if (_shakeParticles == null) {
       return Stack(
         children: widgets,
         overflow: Overflow.visible,
@@ -254,21 +260,24 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     var firstAngle = _particlesAngle;
     var particleRadius = (_particlesAnimation.value * 150);
     var particleOpacity = 1 - _particlesAnimation.value;
-    var length = _lastRollRemainders.length;
+    var length = _shakeParticles.length;
 
-    _lastRollRemainders.asMap().forEach((index, mode) {
-      var currentAngle = (firstAngle + ((2 * math.pi) / length) * index);
+    _shakeParticles.asMap().forEach((index, particle) {
+      var currentAngle = (firstAngle + ((2 * math.pi) / length) * index) + ((particle.seed -.5) * 3);
+      var seedParticleRadius = particleRadius + (particle.seed * 100);
+
       widgets.add(
         Positioned(
-          left: (particleRadius * math.cos(currentAngle)) + -15,
-          top: (particleRadius * math.sin(currentAngle)) + 30,
+          left: (seedParticleRadius * math.cos(currentAngle)) + -15,
+          top: (seedParticleRadius * math.sin(currentAngle)) + 30,
           child: Transform.rotate(
             angle: currentAngle - math.pi / 2,
             child: Opacity(
               opacity: particleOpacity,
               child: Icon(
-                mode.icon,
+                particle.item.icon,
                 color: const Color(0xfff43960),
+                size: 30 * (particle.seed + .3),
               ),
             ),
           ),

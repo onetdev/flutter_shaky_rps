@@ -1,63 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ShakeGameSet {
-  const ShakeGameSet(this.name, this.items, this.icon);
+class ShakeItemSet {
+  const ShakeItemSet(this.name, this.items, this.icon);
 
   final String name;
-  final List<ShakeResult> items;
-  final ShakeResult icon;
+  final List<ShakeItem> items;
+  final ShakeItem icon;
 }
 
 class ShakeGameSets {
-  static ShakeGameSet classic = ShakeGameSet(
+  static ShakeItemSet classic = ShakeItemSet(
       'classic',
       [
-        ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'),
-        ShakeResult(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
-        ShakeResult(icon: FontAwesomeIcons.handScissors, text: 'Scissors')
+        ShakeItem(icon: FontAwesomeIcons.handRock, text: 'Rock'),
+        ShakeItem(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
+        ShakeItem(icon: FontAwesomeIcons.handScissors, text: 'Scissors')
       ],
-      ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Classic mode'));
+      ShakeItem(icon: FontAwesomeIcons.handRock, text: 'Classic mode'));
 
-  static ShakeGameSet spock = ShakeGameSet(
+  static ShakeItemSet spock = ShakeItemSet(
       'spock',
       [
-        ShakeResult(icon: FontAwesomeIcons.handRock, text: 'Rock'),
-        ShakeResult(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
-        ShakeResult(icon: FontAwesomeIcons.handScissors, text: 'Scissors'),
-        ShakeResult(icon: FontAwesomeIcons.handSpock, text: 'Spock'),
-        ShakeResult(icon: FontAwesomeIcons.handLizard, text: 'Lizard')
+        ShakeItem(icon: FontAwesomeIcons.handRock, text: 'Rock'),
+        ShakeItem(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
+        ShakeItem(icon: FontAwesomeIcons.handScissors, text: 'Scissors'),
+        ShakeItem(icon: FontAwesomeIcons.handSpock, text: 'Spock'),
+        ShakeItem(icon: FontAwesomeIcons.handLizard, text: 'Lizard')
       ],
-      ShakeResult(
+      ShakeItem(
           icon: FontAwesomeIcons.handSpock, text: 'Spock and Lizad mode'));
 
-  static ShakeGameSet dice = ShakeGameSet(
+  static ShakeItemSet dice = ShakeItemSet(
       'dice',
       [
-        ShakeResult(icon: FontAwesomeIcons.diceOne, text: 'One'),
-        ShakeResult(icon: FontAwesomeIcons.diceTwo, text: 'Two'),
-        ShakeResult(icon: FontAwesomeIcons.diceThree, text: 'Three'),
-        ShakeResult(icon: FontAwesomeIcons.diceFour, text: 'Four'),
-        ShakeResult(icon: FontAwesomeIcons.diceFive, text: 'Five'),
-        ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Six'),
+        ShakeItem(icon: FontAwesomeIcons.diceOne, text: 'One'),
+        ShakeItem(icon: FontAwesomeIcons.diceTwo, text: 'Two'),
+        ShakeItem(icon: FontAwesomeIcons.diceThree, text: 'Three'),
+        ShakeItem(icon: FontAwesomeIcons.diceFour, text: 'Four'),
+        ShakeItem(icon: FontAwesomeIcons.diceFive, text: 'Five'),
+        ShakeItem(icon: FontAwesomeIcons.diceSix, text: 'Six'),
       ],
-      ShakeResult(icon: FontAwesomeIcons.diceSix, text: 'Dice mode'));
+      ShakeItem(icon: FontAwesomeIcons.diceSix, text: 'Dice mode'));
 
-  static ShakeGameSet puff = ShakeGameSet(
-    'puff',
+  static ShakeItemSet particles = ShakeItemSet(
+    'particles',
     [
-      ShakeResult(icon: FontAwesomeIcons.asterisk, text: 'Asteriks'),
-      ShakeResult(icon: FontAwesomeIcons.meteor, text: 'Meteor'),
-      ShakeResult(icon: FontAwesomeIcons.bomb, text: 'Bomb'),
-      ShakeResult(icon: FontAwesomeIcons.cog, text: 'Cog'),
-      ShakeResult(icon: FontAwesomeIcons.fire, text: 'Fire'),
-      ShakeResult(icon: FontAwesomeIcons.snowflake, text: 'Snowflake'),
+      ShakeItem(icon: FontAwesomeIcons.asterisk, text: 'Asteriks'),
+      ShakeItem(icon: FontAwesomeIcons.meteor, text: 'Meteor'),
+      ShakeItem(icon: FontAwesomeIcons.bomb, text: 'Bomb'),
+      ShakeItem(icon: FontAwesomeIcons.cog, text: 'Cog'),
+      ShakeItem(icon: FontAwesomeIcons.fire, text: 'Fire'),
+      ShakeItem(icon: FontAwesomeIcons.snowflake, text: 'Snowflake'),
     ],
-    ShakeResult(icon: FontAwesomeIcons.asterisk, text: 'Asteriks'),
+    ShakeItem(icon: FontAwesomeIcons.asterisk, text: 'Asteriks'),
   );
 
-  static Map<String, ShakeGameSet> getModes() {
-    var result = Map<String, ShakeGameSet>();
+  static Map<String, ShakeItemSet> getModes() {
+    var result = Map<String, ShakeItemSet>();
     result['classic'] = classic;
     result['spock'] = spock;
     result['dice'] = dice;
@@ -66,9 +66,16 @@ class ShakeGameSets {
   }
 }
 
-class ShakeResult {
-  ShakeResult({this.icon, this.text});
+class ShakeItem {
+  ShakeItem({this.icon, this.text});
 
   final IconData icon;
   final String text;
+}
+
+class ShakeParticle {
+  ShakeParticle(this.item, this.seed);
+
+  final ShakeItem item;
+  final double seed;
 }

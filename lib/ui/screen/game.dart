@@ -17,7 +17,7 @@ class Game extends StatefulWidget {
 }
 
 class _Game extends State<Game> {
-  ShakeGameSet _gameSet = ShakeGameSets.classic;
+  ShakeItemSet _gameSet = ShakeGameSets.classic;
   Shaker _shaker;
 
   @override
@@ -115,7 +115,7 @@ class _Game extends State<Game> {
   }
 
   /// Event handler for the game set selector.0000
-  onGameSetChange(ShakeGameSet mode) {
+  onGameSetChange(ShakeItemSet mode) {
     setState(() {
       _gameSet = mode;
     });
