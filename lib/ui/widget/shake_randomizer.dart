@@ -250,7 +250,11 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     var widgets = List<Widget>();
     widgets.add(SizedBox(width: 1, height: 1));
 
-    if (_shakeParticles == null) {
+    /// Draw nothing when animation has ended of there is no particles to draw
+    if (_shakeParticles == null ||
+        _particlesAnimation.value == 1 ||
+        _particlesAnimation.value == 0)
+    {
       return Stack(
         children: widgets,
         overflow: Overflow.visible,
@@ -263,7 +267,8 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     var length = _shakeParticles.length;
 
     _shakeParticles.asMap().forEach((index, particle) {
-      var currentAngle = (firstAngle + ((2 * math.pi) / length) * index) + ((particle.seed -.5) * 3);
+      var currentAngle = (firstAngle + ((2 * math.pi) / length) * index) +
+          ((particle.seed - .5) * 3);
       var seedParticleRadius = particleRadius + (particle.seed * 100);
 
       widgets.add(
