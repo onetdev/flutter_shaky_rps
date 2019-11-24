@@ -29,7 +29,7 @@ class ShakeGameSets {
         ShakeItem(icon: FontAwesomeIcons.handLizard, text: 'Lizard')
       ],
       ShakeItem(
-          icon: FontAwesomeIcons.handSpock, text: 'Spock and Lizad mode'));
+          icon: FontAwesomeIcons.handSpock, text: 'Lizad and Spock mode'));
 
   static ShakeItemSet dice = ShakeItemSet(
       'dice',

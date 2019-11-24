@@ -46,6 +46,7 @@ class _Info extends State<Info> {
           Text(
               "\nAlways hold your device tightly when shaking because if you drop it I'm are not responsible.\n",
               style: paragraph),
+
           Text('How to play', style: headline),
           Text(
               "\n1.) Choose your preferred game mode from the bottom (classic, lizard-spock, dice) of the screen.\n",
@@ -55,8 +56,11 @@ class _Info extends State<Info> {
               style: paragraph),
           Text("Possible outcomes", style: headline),
           SizedBox(height: 10),
+              Text(
+                  "Based on the game mode you select, the following possible values can be drawn respectively.\n",
+                  style: paragraph),
           _getRollTable(),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Text("Who did this?", style: headline),
           Text(
             "\nI'm a Hungarian \ud83c\udded\ud83c\uddfa developer who loves Flutter and this was one of my experiments that I wanted to share. " +
@@ -85,7 +89,7 @@ class _Info extends State<Info> {
       var cols = List<Widget>();
       mode.items.forEach((elem) {
         cols.add(Padding(
-          padding: EdgeInsets.only(top: 7, bottom: 10, right: 10),
+          padding: EdgeInsets.only(top: 7, bottom: 25, right: 10),
           child: Icon(elem.icon, color: Colors.white),
         ));
       });
