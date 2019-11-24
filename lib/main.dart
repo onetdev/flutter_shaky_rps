@@ -65,10 +65,11 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Game(),
         routes: <String, WidgetBuilder>{
+          '/': (BuildContext context) => new Game(),
           '/info': (BuildContext context) => new Info(),
         },
+        initialRoute: '/',
       ),
     );
   }
