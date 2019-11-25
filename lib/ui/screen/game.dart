@@ -50,8 +50,13 @@ class _Game extends State<Game> {
         body: Container(
             color: const Color(0xff27364e),
             width: deviceSize.width,
-            child: ShakeRandomizer(_gameSet)),
-        bottomNavigationBar: _buildBottom(),
+            child: Column(
+              children: [
+                Expanded(child: ShakeRandomizer(_gameSet)),
+                _buildBottom()
+              ],
+            )),
+        // bottomNavigationBar: _buildBottom(),
       ),
       _shaker?.status != ShakeStatus.ACTIVE
           ? Container()
@@ -95,21 +100,18 @@ class _Game extends State<Game> {
   /// Bottom part contains the available game sets.
   /// When game set is changed the corresponding button will be highlighted.
   Widget _buildBottom() {
-    return BottomAppBar(
-      elevation: 0,
-      child: Container(
-        //color: const Color(0xff27364e),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [const Color(0xff27364e), const Color(0xff1f2b3e)],
-          ),
+    return Container(
+      //color: const Color(0xff27364e),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [const Color(0xff27364e), const Color(0xff1f2b3e)],
         ),
-        child: SourceSelector(
-          mode: _gameSet,
-          onChanged: (mode) => onGameSetChange(mode),
-        ),
+      ),
+      child: SourceSelector(
+        mode: _gameSet,
+        onChanged: (mode) => onGameSetChange(mode),
       ),
     );
   }
