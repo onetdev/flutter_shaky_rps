@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,13 +16,29 @@ class Game extends StatefulWidget {
   _Game createState() => _Game();
 }
 
-class _Game extends State<Game> {
+class _Game extends State<Game> with TickerProviderStateMixin {
   ShakeItemSet _gameSet = ShakeGameSets.classic;
   Shaker _shaker;
+  AnimationController _revolverAnimationController;
 
   @override
   void initState() {
     super.initState();
+
+    _revolverAnimationController = new AnimationController(
+      vsync: this,
+      duration: new Duration(milliseconds: 20000),
+    );
+    _revolverAnimationController.addListener(() => setState(() {}));
+    _revolverAnimationController.addStatusListener((status) {
+      print(status);
+      if (status == AnimationStatus.completed) {
+        _revolverAnimationController.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        _revolverAnimationController.forward();
+      }
+    });
+    // _revolverAnimationController.forward();
   }
 
   @override
@@ -32,28 +48,42 @@ class _Game extends State<Game> {
     _shaker.removeListener(onShakerStateChange);
     _shaker.addListener(onShakerStateChange);
 
-    return Stack(children: [
-      Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xff27364e),
-          elevation: 0,
-          actions: [
-            Container(
-              padding: EdgeInsets.only(right: 20),
-              child: IconButton(
-                icon: Icon(FontAwesomeIcons.info),
-                onPressed: () => openHelp(context),
-              ),
-            )
-          ],
+    return Stack(overflow: Overflow.visible, children: [
+      Transform.scale(
+        scale: 1 +  _revolverAnimationController.value,
+        // angle: 45 * math.pi / 180,
+        child: Image.asset(
+          "assets/images/main_bg.png",
+          scale: 1,
+          fit: BoxFit.cover,
+          width: deviceSize.width,
+          height: deviceSize.height,
         ),
+      ),
+      Scaffold(
+        backgroundColor: Colors.transparent,
         body: Container(
-            color: const Color(0xff27364e),
+            // color: const Color(0xff27364e),
             width: deviceSize.width,
             child: Column(
               children: [
+                SafeArea(
+                  child: Container(
+                    width: deviceSize.width,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.only(right: 20),
+                    child: IconButton(
+                      icon: Icon(FontAwesomeIcons.info),
+                      onPressed: () => openHelp(context),
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
                 Expanded(child: ShakeRandomizer(_gameSet)),
-                _buildBottom()
+                SourceSelector(
+                  mode: _gameSet,
+                  onChanged: (mode) => onGameSetChange(mode),
+                )
               ],
             )),
         // bottomNavigationBar: _buildBottom(),
@@ -72,7 +102,8 @@ class _Game extends State<Game> {
 
   void openHelp(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double diagonal = sqrt(pow(size.width, 2) + pow(size.height, 2));
+    double diagonal =
+        math.sqrt(math.pow(size.width, 2) + math.pow(size.height, 2));
 
     Navigator.push(
       context,
@@ -95,25 +126,6 @@ class _Game extends State<Game> {
           // colorHue: ColorHue.multiple(colorHues: [ColorHue.red, ColorHue.blue]),
           ),
       child: SizedBox(width: size.width, height: size.height),
-    );
-  }
-
-  /// Bottom part contains the available game sets.
-  /// When game set is changed the corresponding button will be highlighted.
-  Widget _buildBottom() {
-    return Container(
-      //color: const Color(0xff27364e),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [const Color(0xff27364e), const Color(0xff1f2b3e)],
-        ),
-      ),
-      child: SourceSelector(
-        mode: _gameSet,
-        onChanged: (mode) => onGameSetChange(mode),
-      ),
     );
   }
 

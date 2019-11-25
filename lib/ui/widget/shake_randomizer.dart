@@ -50,6 +50,9 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
   Animation _particlesAnimation;
   Animation _wiggleAnimation;
 
+  /// Delays between two shake instruction shaking in seconds.
+  final int attentionWake = 10;
+
   /// Creating animations controllers and state updaters.
   /// Lines with empty setState() expression are the for only marking the
   /// widget as "must rebuild".
@@ -143,7 +146,8 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
 
   /// Schedule a instruction label shake between 10 and 15 seconds.
   void scheduleInstructionShake() {
-    Timer(Duration(seconds: 10 + _random.nextInt(5)), () {
+    var wait = attentionWake + _random.nextInt(attentionWake ~/ 2);
+    Timer(Duration(seconds: wait), () {
       _wiggleAnimationController?.forward(from: 0);
     });
   }
@@ -192,6 +196,29 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
   /// This will show the instruction label above the results
   /// This also has an animation so it wiggles from time to time.
   Widget _buildInstruction() {
+    var shadows = List<Shadow>();
+    shadows.add(Shadow(
+      color: Colors.black,
+      offset: Offset(0, -3),
+    ));
+
+    var shadowColors = [
+      [Colors.blue, -1, 1],
+      [Colors.pink, -1, -1],
+      [Colors.orange, 1, -1],
+      [Colors.lime, 1, 1]
+    ];
+    var shadowDistance = 3;
+    shadowColors.asMap().forEach((index, color) {
+      shadows.add(Shadow(
+        color: color[0],
+        offset: Offset(
+          _wiggleAnimationController.value * shadowDistance * color[1],
+          _wiggleAnimationController.value * shadowDistance * color[2],
+        ),
+      ));
+    });
+
     return Container(
       key: ValueKey('roll_instruction'),
       child: Transform.rotate(
@@ -204,6 +231,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
               fontSize: 50,
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              shadows: shadows,
             ),
             textAlign: TextAlign.center,
           ),
