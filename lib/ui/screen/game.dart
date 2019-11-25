@@ -78,7 +78,8 @@ class _Game extends State<Game> {
       context,
       RevealRoute(
         page: Info(),
-        centerAlignment: Alignment.topRight,
+        centerIn: AnimationCenter(alignment: Alignment.topRight),
+        centerOut: AnimationCenter(alignment: Alignment.topLeft),
         maxRadius: diagonal,
       ),
     );
