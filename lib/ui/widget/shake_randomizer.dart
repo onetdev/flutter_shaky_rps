@@ -51,7 +51,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
   Animation _wiggleAnimation;
 
   /// Delays between two shake instruction shaking in seconds.
-  final int attentionWake = 10;
+  final int attentionWake = 7;
 
   /// Creating animations controllers and state updaters.
   /// Lines with empty setState() expression are the for only marking the
@@ -113,21 +113,19 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     /// change.
     _wiggleAnimationController = new AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 100),
+      duration: Duration(milliseconds: 300),
     );
     _wiggleAnimation = new CurvedAnimation(
       parent: _wiggleAnimationController,
-      curve: Curves.easeInOutBack,
+      curve: Cubic(.5, -1, .5, -0.25),
     );
+
     _wiggleAnimation.addListener(() => setState(() {}));
     _wiggleAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _wiggleAnimationController.reverse();
       } else if (status == AnimationStatus.dismissed) {
-        if (_random.nextInt(3) == 1)
-          scheduleInstructionShake();
-        else
-          _wiggleAnimationController.forward();
+        scheduleInstructionShake();
       }
     });
 
@@ -213,8 +211,8 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
       shadows.add(Shadow(
         color: color[0],
         offset: Offset(
-          _wiggleAnimationController.value * shadowDistance * color[1],
-          _wiggleAnimationController.value * shadowDistance * color[2],
+          _wiggleAnimation.value * shadowDistance * color[1],
+          _wiggleAnimation.value * shadowDistance * color[2],
         ),
       ));
     });
@@ -222,7 +220,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
     return Container(
       key: ValueKey('roll_instruction'),
       child: Transform.rotate(
-        angle: _wiggleAnimationController.value * 3 * math.pi / 180,
+        angle: _wiggleAnimation.value * 3 * math.pi / 180,
         child: GestureDetector(
           onTap: () {
             if (_status != ShakeRandomizerStatus.VISIBLE &&
