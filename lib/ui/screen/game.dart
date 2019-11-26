@@ -10,35 +10,20 @@ import 'package:shaky_rps/ui/transition/reveal.dart';
 import 'package:shaky_rps/ui/widget/shake_randomizer.dart';
 import 'package:shaky_rps/ui/widget/source_selector.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
+import 'package:shaky_rps/ui/widget/rotating_background.dart';
 
 class Game extends StatefulWidget {
   @override
   _Game createState() => _Game();
 }
 
-class _Game extends State<Game> with TickerProviderStateMixin {
+class _Game extends State<Game> {
   ShakeItemSet _gameSet = ShakeGameSets.classic;
   Shaker _shaker;
-  AnimationController _revolverAnimationController;
 
   @override
   void initState() {
     super.initState();
-
-    _revolverAnimationController = new AnimationController(
-      vsync: this,
-      duration: new Duration(milliseconds: 20000),
-    );
-    _revolverAnimationController.addListener(() => setState(() {}));
-    _revolverAnimationController.addStatusListener((status) {
-      print(status);
-      if (status == AnimationStatus.completed) {
-        _revolverAnimationController.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _revolverAnimationController.forward();
-      }
-    });
-    // _revolverAnimationController.forward();
   }
 
   @override
@@ -49,17 +34,7 @@ class _Game extends State<Game> with TickerProviderStateMixin {
     _shaker.addListener(onShakerStateChange);
 
     return Stack(overflow: Overflow.visible, children: [
-      Transform.scale(
-        scale: 1 +  _revolverAnimationController.value,
-        // angle: 45 * math.pi / 180,
-        child: Image.asset(
-          "assets/images/main_bg.png",
-          scale: 1,
-          fit: BoxFit.cover,
-          width: deviceSize.width,
-          height: deviceSize.height,
-        ),
-      ),
+      RotatingBackground(),
       Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
@@ -81,6 +56,7 @@ class _Game extends State<Game> with TickerProviderStateMixin {
                 ),
                 Expanded(child: ShakeRandomizer(_gameSet)),
                 SourceSelector(
+                  key: ValueKey('source_selector'),
                   mode: _gameSet,
                   onChanged: (mode) => onGameSetChange(mode),
                 )
