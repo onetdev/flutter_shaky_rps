@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,7 +33,7 @@ class _Info extends State<Info> {
             padding: EdgeInsets.only(right: 20),
             child: IconButton(
               icon: Icon(FontAwesomeIcons.solidEnvelope),
-              onPressed: () => _sendEmail(),
+              onPressed: () => _launchUrl("mailto:József Koller<contact@onetdev.com>"),
             ),
           )
         ],
@@ -65,9 +67,19 @@ class _Info extends State<Info> {
             Text(
               "\nI'm a Hungarian \ud83c\udded\ud83c\uddfa developer who loves Flutter and this was one of my experiments that I wanted to share. " +
                   "So, here it goes.\n" +
-                  "\nIf you have any question, tap on the envelop in the right top corner.",
+                  "\nIf you have any question, tap on the envelop in the right top corner.\n",
               style: paragraph,
             ),
+            GestureDetector(
+              onTap: () => _launchUrl("https://onetdev.com/projects/shaky_rps/privacy_policy.html"),
+              child: Text(
+                "Privacy policy",
+                style: TextStyle(
+                  color: Colors.white,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -104,9 +116,7 @@ class _Info extends State<Info> {
     );
   }
 
-  /// Tries to open the OS's default mailer to send email to the owner of the app.
-  void _sendEmail() async {
-    const url = 'mailto:József Koller<contact@onetdev.com>';
+  void _launchUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
