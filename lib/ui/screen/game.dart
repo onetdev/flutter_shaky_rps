@@ -46,7 +46,7 @@ class _Game extends State<Game> {
                   child: Container(
                     width: deviceSize.width,
                     alignment: Alignment.topRight,
-                    padding: EdgeInsets.only(right: 20),
+                    padding: EdgeInsets.only(right: 20, bottom: 50),
                     child: IconButton(
                       icon: Icon(FontAwesomeIcons.info),
                       onPressed: () => openHelp(context),
