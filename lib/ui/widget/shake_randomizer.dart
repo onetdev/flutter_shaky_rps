@@ -224,7 +224,13 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
       child: Transform.rotate(
         angle: _wiggleAnimationController.value * 3 * math.pi / 180,
         child: GestureDetector(
-          onTap: () => generateResult(),
+          onTap: () {
+            if (_status != ShakeRandomizerStatus.VISIBLE &&
+                _status != ShakeRandomizerStatus.HIDDEN) {
+              return;
+            }
+            generateResult();
+          },
           child: Text(
             _shaker.hasShakeSupport ? "Shake me!" : "Touch me!",
             style: TextStyle(
@@ -306,7 +312,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
 
       widgets.add(
         Positioned(
-          left: (seedParticleRadius * math.cos(currentAngle)) + -15,
+          left: (seedParticleRadius * math.cos(currentAngle)),
           top: (seedParticleRadius * math.sin(currentAngle)) + 30,
           child: Transform.rotate(
             angle: currentAngle - math.pi / 2,
