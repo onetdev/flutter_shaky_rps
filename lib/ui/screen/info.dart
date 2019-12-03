@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +19,9 @@ class _Info extends State<Info> {
   );
 
   static var paragraph = TextStyle(color: Colors.white);
+  static String email = "mailto:József Koller<contact@onetdev.com>";
+  static String privacyUrl =
+      "https://onetdev.com/projects/shaky_rps/privacy_policy.html";
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class _Info extends State<Info> {
             padding: EdgeInsets.only(right: 20),
             child: IconButton(
               icon: Icon(FontAwesomeIcons.solidEnvelope),
-              onPressed: () => _launchUrl("mailto:József Koller<contact@onetdev.com>"),
+              onPressed: () => _launchUrl(email),
             ),
           )
         ],
@@ -48,6 +51,9 @@ class _Info extends State<Info> {
             Text('Disclaimer', style: headline),
             Text(
                 "\nAlways hold your device tightly when shaking because if you drop it I'm are not responsible.\n",
+                style: paragraph),
+            Text(
+                "The user experience might differ on per phone basis.\n",
                 style: paragraph),
             Text('How to play', style: headline),
             Text(
@@ -70,15 +76,32 @@ class _Info extends State<Info> {
                   "\nIf you have any question, tap on the envelop in the right top corner.\n",
               style: paragraph,
             ),
-            GestureDetector(
-              onTap: () => _launchUrl("https://onetdev.com/projects/shaky_rps/privacy_policy.html"),
-              child: Text(
-                "Privacy policy",
-                style: TextStyle(
-                  color: Colors.white,
-                  decoration: TextDecoration.underline,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => _launchUrl(privacyUrl),
+                  child: Text(
+                    "Privacy policy",
+                    style: TextStyle(
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
-              ),
+                FutureBuilder(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, info) {
+                    if (info.data == null) {
+                      return Text('');
+                    }
+                    return Text(
+                      'v${info.data.version} build ${info.data.buildNumber}',
+                      style: TextStyle(color: Colors.white30),
+                    );
+                  },
+                ),
+              ],
             )
           ],
         ),
