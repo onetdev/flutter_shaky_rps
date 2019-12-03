@@ -228,6 +228,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
                 _status != ShakeRandomizerStatus.HIDDEN) {
               return;
             }
+            _shaker?.updateHasShakeSupport();
             generateResult();
           },
           child: Text(

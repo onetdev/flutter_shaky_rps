@@ -98,7 +98,7 @@ class SampleStats {
   }
 
   String toString() {
-    return "[avg: ${avg.toString()}, nonzero: $nonZero, acceleration: ${avgAcceleration.toString()}, elapsed: ${elapsedTime.toString()}]";
+    return "[avg: ${avg.toString()}, nonZero: $nonZero, acceleration: ${avgAcceleration.toString()}, elapsed: ${elapsedTime.toString()}]";
   }
 }
 

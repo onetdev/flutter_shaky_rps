@@ -8,30 +8,34 @@ import 'package:shaky_rps/controllers/shaker.dart';
 import 'package:shaky_rps/ui/screen/game.dart';
 import 'package:shaky_rps/ui/screen/info.dart';
 
-void main() {
+void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  return runApp(ShakingRpsApp());
+
+  var shaker = new Shaker(cooldown: Duration(seconds: 1));
+  await shaker.init();
+
+  return runApp(ShakingRpsApp(shaker));
 }
 
 class ShakingRpsApp extends StatefulWidget {
+  @override
+  ShakingRpsApp(this.shaker, {Key key}) : super(key: key);
+
+  final Shaker shaker;
+
   @override
   _ShakingRpsAppState createState() => _ShakingRpsAppState();
 }
 
 class _ShakingRpsAppState extends State<ShakingRpsApp>
     with WidgetsBindingObserver {
-  Shaker shaker;
-
   @override
   void initState() {
     super.initState();
 
-    shaker = new Shaker(cooldown: Duration(seconds: 1));
-    shaker.init();
-
     Timer(Duration(seconds: 1), () {
-      shaker.updateHasShakeSupport();
+      widget.shaker.updateHasShakeSupport();
     });
 
     WidgetsBinding.instance.addObserver(this);
@@ -50,10 +54,10 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
       case AppLifecycleState.suspending:
-        shaker.stop();
+        widget.shaker.stop();
         break;
       case AppLifecycleState.resumed:
-        shaker.init();
+        widget.shaker.init();
         break;
     }
   }
@@ -61,7 +65,7 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(builder: (_) => shaker)],
+      providers: [ChangeNotifierProvider(builder: (_) => widget.shaker)],
       child: MaterialApp(
         title: 'Shakey RPS',
         theme: ThemeData(

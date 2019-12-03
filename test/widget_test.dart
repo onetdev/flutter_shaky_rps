@@ -7,13 +7,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shaky_rps/controllers/shaker.dart';
 
 import 'package:shaky_rps/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    var shaker = new Shaker(cooldown: Duration(seconds: 1));
+    await shaker.init();
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(ShakingRpsApp());
+    await tester.pumpWidget(ShakingRpsApp(shaker));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

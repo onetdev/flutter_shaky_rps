@@ -81,7 +81,7 @@ class Shaker with ChangeNotifier {
   /// If the last event average for shake events is over 25Hz, then we consider
   /// the device capable of detecting proper accelerations.
   updateHasShakeSupport() {
-    if (_detector?.stats == null) {
+    if (_detector?.stats != null) {
       _hasShakeSupport =
           _detector.stats.avg < 400000 && _detector.stats.nonZero > 0;
     }
