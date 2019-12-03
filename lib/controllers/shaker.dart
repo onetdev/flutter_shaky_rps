@@ -82,7 +82,8 @@ class Shaker with ChangeNotifier {
   /// the device capable of detecting proper accelerations.
   updateHasShakeSupport() {
     if (_detector?.stats == null) {
-      _hasShakeSupport = _detector.stats.avg < 400000;
+      _hasShakeSupport =
+          _detector.stats.avg < 400000 && _detector.stats.nonZero > 0;
     }
     notifyListeners();
   }

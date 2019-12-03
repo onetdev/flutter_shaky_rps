@@ -51,7 +51,7 @@ class ShakeDetector {
       _queue.clear();
     }
 
-    _stats.increment(accelerating);
+    _stats.increment(accelerating, event.x + event.y + event.z > 0);
   }
 
   /// Returns true if the device is currently accelerating.
@@ -72,6 +72,7 @@ class SampleStats {
       : this._startTime = DateTime.now().microsecondsSinceEpoch;
 
   int _total = 0;
+  int _nonZero = 0;
   int _acceleration = 0;
   int _startTime = 0;
 
@@ -85,13 +86,19 @@ class SampleStats {
   /// Average acceleration events distance in microseconds.
   double get avgAcceleration => elapsedTime / _acceleration;
 
-  void increment(bool isAccelerating) {
+  /// Some phone sends invalid user acceleration coordinates
+  /// so we need to keep track of "valid" events.
+  /// Perfectly standing phone might provide false results.
+  int get nonZero => _nonZero;
+
+  void increment(bool isAccelerating, bool isNonZero) {
     _total++;
+    _nonZero += isNonZero ? 1 : 0;
     _acceleration += isAccelerating ? 1 : 0;
   }
 
   String toString() {
-    return "[avg: ${avg.toString()}, acceleration: ${avgAcceleration.toString()}, elapsed: ${elapsedTime.toString()}]";
+    return "[avg: ${avg.toString()}, nonzero: $nonZero, acceleration: ${avgAcceleration.toString()}, elapsed: ${elapsedTime.toString()}]";
   }
 }
 
