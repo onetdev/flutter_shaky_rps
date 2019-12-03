@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shaky_rps/lang.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
 
 typedef SourceOnChangedCallback = Function(ShakeItemSet mode);
@@ -18,7 +19,7 @@ class SourceSelector extends StatelessWidget {
 
     modes.forEach((name, elem) {
       int _position = _index == 0 ? -1 : (_index == modes.length - 1 ? 1 : 0);
-      icons.add(_buildItem(elem, _position));
+      icons.add(_buildItem(context, elem, _position));
       _index++;
     });
 
@@ -34,7 +35,7 @@ class SourceSelector extends StatelessWidget {
   /// Mode contains all the metadata for a given randomized mode
   /// Position is a value between [-1...1), -1 means first on the left,
   /// 0 means in the middle somewhere and 1 means on the right.
-  Widget _buildItem(ShakeItemSet mode, int position) {
+  Widget _buildItem(BuildContext context, ShakeItemSet mode, int position) {
     Color color;
     Color textColor;
     BorderRadius radius;
@@ -67,7 +68,7 @@ class SourceSelector extends StatelessWidget {
           mode.icon.icon,
           color: textColor,
           size: 30.0,
-          semanticLabel: mode.icon.text,
+          semanticLabel: Lang.of(context).translate(mode.icon.text),
         ),
       ),
     );

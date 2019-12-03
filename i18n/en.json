@@ -1,0 +1,50 @@
+{
+  "info": {
+    "disclaimer": {
+      "title": "Disclaimer",
+      "hold_tight": "Always hold your device tightly when shaking because if you drop it I'm are not responsible.",
+      "experience_differ": "The user experience might differ on per phone basis."
+    },
+    "how_to_play": {
+      "title" : "How to play",
+      "step_1": "1.) Choose your preferred game mode from the bottom (classic, lizard-spock, dice) of the screen.",
+      "step_2": "2.) Shake the phone and the result will be on your screen as soon as you stop shaking your phone."
+    },
+    "outcomes": {
+      "title": "Possible outcomes",
+      "body": "Based on the game mode you select, the following possible values can be drawn respectively."
+    },
+    "about": {
+      "title": "Who did this?",
+      "body": "I'm a Hungarian \ud83c\udded\ud83c\uddfa developer who loves Flutter and this was one of my experiments that I wanted to share.",
+      "contact": "If you have any question, tap on the envelop in the right top corner."
+    },
+    "privacy_policy": "Privacy policy"
+  },
+  "game": {
+    "shake_me": "Shake me!",
+    "touch_me": "Touch me!"
+  },
+  "modes": {
+    "classic": {
+      "title": "Classic mode",
+      "rock": "Rock",
+      "paper": "Paper",
+      "scissors": "Scissors"
+    },
+    "spock": {
+      "title": "Lizard and Spock mode",
+      "lizard": "Lizard",
+      "spock": "Spock"
+    },
+    "dice": {
+      "title": "Dice mode",
+      "one": "One",
+      "two": "Two",
+      "three": "Three",
+      "four": "Four",
+      "five": "Five",
+      "six": "Six"
+    }
+  }
+}

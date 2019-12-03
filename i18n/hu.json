@@ -1,0 +1,50 @@
+{
+  "info": {
+    "disclaimer": {
+      "title": "Figyelem",
+      "hold_tight": "Mindig tartsd a telefonod szorosan, hiszen baleset esetén te tartozol felelőséggel.",
+      "experience_differ": "A felhasználói élmény telefononként változhat.."
+    },
+    "how_to_play": {
+      "title" : "Hogyan játsz?",
+      "step_1": "1.) Válazd ki a számodra tetsző játékmódot az alkalmazás aljáról (klasszikus, lizard-spock, dobókocka).",
+      "step_2": "2.) Rázd meg a telefonod és a képernyőn máris láthatod az eredményt."
+    },
+    "outcomes": {
+      "title": "Lehetséges eredmények",
+      "body": "A kiválasztott játékmód alapján az alábbi lehetséges eredményekre számíthatsz."
+    },
+    "about": {
+      "title": "Ki készítette ezt?",
+      "body": "Egy magyar \ud83c\udded\ud83c\uddfa fejlesztő vagyok aki egy teszt projekt során úgy gondolta, akár másoknak is tetszene ez a kis szórakoztató eszköz.",
+      "contact": "Ha bármi kérdésed van, pöccincs a jobb felső sarokban található borítékra."
+    },
+    "privacy_policy": "Adatvédelmi nyilatkozat"
+  },
+  "game": {
+    "shake_me": "Rázz meg!",
+    "touch_me": "Érints meg!"
+  },
+  "modes": {
+    "classic": {
+      "title": "Klasszikus mód",
+      "rock": "Kő",
+      "paper": "Papír",
+      "scissors": "Olló"
+    },
+    "spock": {
+      "title": "Lizard és Spock mód",
+      "lizard": "Lizard",
+      "spock": "Spock"
+    },
+    "dice": {
+      "title": "Dobókocka mód",
+      "one": "Egy",
+      "two": "Kettő",
+      "three": "Három",
+      "four": "Négy",
+      "five": "Öt",
+      "six": "Hat"
+    }
+  }
+}

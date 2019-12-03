@@ -13,35 +13,35 @@ class ShakeGameSets {
   static ShakeItemSet classic = ShakeItemSet(
       'classic',
       [
-        ShakeItem(icon: FontAwesomeIcons.handRock, text: 'Rock'),
-        ShakeItem(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
-        ShakeItem(icon: FontAwesomeIcons.handScissors, text: 'Scissors')
+        ShakeItem(icon: FontAwesomeIcons.handRock, text: 'modes.classic.rock'),
+        ShakeItem(icon: FontAwesomeIcons.handPaper, text: 'modes.classic.paper'),
+        ShakeItem(icon: FontAwesomeIcons.handScissors, text: 'modes.classic.scissors')
       ],
-      ShakeItem(icon: FontAwesomeIcons.handRock, text: 'Classic mode'));
+      ShakeItem(icon: FontAwesomeIcons.handRock, text: 'modes.classic.title'));
 
   static ShakeItemSet spock = ShakeItemSet(
       'spock',
       [
-        ShakeItem(icon: FontAwesomeIcons.handRock, text: 'Rock'),
-        ShakeItem(icon: FontAwesomeIcons.handPaper, text: 'Paper'),
-        ShakeItem(icon: FontAwesomeIcons.handScissors, text: 'Scissors'),
-        ShakeItem(icon: FontAwesomeIcons.handSpock, text: 'Spock'),
-        ShakeItem(icon: FontAwesomeIcons.handLizard, text: 'Lizard')
+        ShakeItem(icon: FontAwesomeIcons.handRock, text: 'modes.classic.rock'),
+        ShakeItem(icon: FontAwesomeIcons.handPaper, text: 'modes.classic.paper'),
+        ShakeItem(icon: FontAwesomeIcons.handScissors, text: 'modes.classic.scissors'),
+        ShakeItem(icon: FontAwesomeIcons.handSpock, text: 'modes.spock.spock'),
+        ShakeItem(icon: FontAwesomeIcons.handLizard, text: 'modes.spock.lizard')
       ],
       ShakeItem(
-          icon: FontAwesomeIcons.handSpock, text: 'Lizad and Spock mode'));
+          icon: FontAwesomeIcons.handSpock, text: 'modes.spock.title'));
 
   static ShakeItemSet dice = ShakeItemSet(
       'dice',
       [
-        ShakeItem(icon: FontAwesomeIcons.diceOne, text: 'One'),
-        ShakeItem(icon: FontAwesomeIcons.diceTwo, text: 'Two'),
-        ShakeItem(icon: FontAwesomeIcons.diceThree, text: 'Three'),
-        ShakeItem(icon: FontAwesomeIcons.diceFour, text: 'Four'),
-        ShakeItem(icon: FontAwesomeIcons.diceFive, text: 'Five'),
-        ShakeItem(icon: FontAwesomeIcons.diceSix, text: 'Six'),
+        ShakeItem(icon: FontAwesomeIcons.diceOne, text: 'modes.dice.one'),
+        ShakeItem(icon: FontAwesomeIcons.diceTwo, text: 'modes.dice.two'),
+        ShakeItem(icon: FontAwesomeIcons.diceThree, text: 'modes.dice.three'),
+        ShakeItem(icon: FontAwesomeIcons.diceFour, text: 'modes.dice.four'),
+        ShakeItem(icon: FontAwesomeIcons.diceFive, text: 'modes.dice.five'),
+        ShakeItem(icon: FontAwesomeIcons.diceSix, text: 'modes.dice.six'),
       ],
-      ShakeItem(icon: FontAwesomeIcons.diceSix, text: 'Dice mode'));
+      ShakeItem(icon: FontAwesomeIcons.diceSix, text: 'modes.dice.title'));
 
   static ShakeItemSet particles = ShakeItemSet(
     'particles',

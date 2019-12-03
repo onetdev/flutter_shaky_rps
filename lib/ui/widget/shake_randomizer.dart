@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shaky_rps/controllers/shaker.dart';
+import 'package:shaky_rps/lang.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
 
 enum ShakeRandomizerStatus {
@@ -230,7 +231,7 @@ class _ShakeRandomizer extends State<ShakeRandomizer>
             generateResult();
           },
           child: Text(
-            _shaker.hasShakeSupport ? "Shake me!" : "Touch me!",
+            Lang.of(context).translate(_shaker.hasShakeSupport ? "game.shake_me" : "game.touch_me"),
             style: TextStyle(
               fontSize: 50,
               color: Colors.white,

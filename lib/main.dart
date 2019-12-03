@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shaky_rps/lang.dart';
 import 'package:shaky_rps/controllers/shaker.dart';
 import 'package:shaky_rps/ui/screen/game.dart';
 import 'package:shaky_rps/ui/screen/info.dart';
@@ -65,6 +67,15 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('hu', 'HU'),
+        ],
+        localizationsDelegates: [
+          Lang.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
         routes: <String, WidgetBuilder>{
           '/': (BuildContext context) => new Game(),
           '/info': (BuildContext context) => new Info(),

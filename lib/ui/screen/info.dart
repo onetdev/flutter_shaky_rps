@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info/package_info.dart';
+import 'package:shaky_rps/lang.dart';
 import 'package:shaky_rps/vars/shake_set.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +19,7 @@ class _Info extends State<Info> {
   );
 
   static var paragraph = TextStyle(color: Colors.white);
+
   static String email = "mailto:József Koller<contact@onetdev.com>";
   static String privacyUrl =
       "https://onetdev.com/projects/shaky_rps/privacy_policy.html";
@@ -26,6 +27,7 @@ class _Info extends State<Info> {
   @override
   Widget build(BuildContext context) {
     Size deviceSize = MediaQuery.of(context).size;
+    var t = (key) => Lang.of(context).translate(key);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,32 +50,24 @@ class _Info extends State<Info> {
         child: ListView(
           padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
           children: [
-            Text('Disclaimer', style: headline),
+            Text(t('info.disclaimer.title'), style: headline),
             Text(
-                "\nAlways hold your device tightly when shaking because if you drop it I'm are not responsible.\n",
+                "\n${t('info.disclaimer.hold_tight')}\n\n" +
+                    "${t('info.disclaimer.experience_differ')}\n",
                 style: paragraph),
+            Text(t("info.how_to_play.title"), style: headline),
             Text(
-                "The user experience might differ on per phone basis.\n",
+                "\n${t('info.how_to_play.step_1')}\n\n" +
+                    "${t('info.how_to_play.step_2')}\n",
                 style: paragraph),
-            Text('How to play', style: headline),
-            Text(
-                "\n1.) Choose your preferred game mode from the bottom (classic, lizard-spock, dice) of the screen.\n",
-                style: paragraph),
-            Text(
-                "2.) Shake the phone and the result will be on your screen as soon as you stop shaking your phone.\n",
-                style: paragraph),
-            Text("Possible outcomes", style: headline),
+            Text(t('info.outcomes.title'), style: headline),
             SizedBox(height: 10),
-            Text(
-                "Based on the game mode you select, the following possible values can be drawn respectively.\n",
-                style: paragraph),
-            _getRollTable(),
+            Text("${t('info.outcomes.body')}\n", style: paragraph),
+            _getRollTable(context),
             SizedBox(height: 10),
-            Text("Who did this?", style: headline),
+            Text(t('info.about.title'), style: headline),
             Text(
-              "\nI'm a Hungarian \ud83c\udded\ud83c\uddfa developer who loves Flutter and this was one of my experiments that I wanted to share. " +
-                  "So, here it goes.\n" +
-                  "\nIf you have any question, tap on the envelop in the right top corner.\n",
+              "\n${t('info.about.body')}\n\n${t('info.about.contact')}\n",
               style: paragraph,
             ),
             Row(
@@ -82,7 +76,7 @@ class _Info extends State<Info> {
                 GestureDetector(
                   onTap: () => _launchUrl(privacyUrl),
                   child: Text(
-                    "Privacy policy",
+                    t('info.privacy_policy'),
                     style: TextStyle(
                       color: Colors.white,
                       decoration: TextDecoration.underline,
@@ -109,12 +103,15 @@ class _Info extends State<Info> {
     );
   }
 
-  Column _getRollTable() {
+  /// Generates a table with all the possible options for different rolling
+  /// modes.
+  Column _getRollTable(BuildContext context) {
     var rows = List<Widget>();
+    var t = (key) => Lang.of(context).translate(key);
 
     ShakeGameSets.getModes().forEach((name, mode) {
       rows.add(Text(
-        mode.icon.text,
+        t(mode.icon.text),
         style: TextStyle(
           color: const Color(0xfff23861),
           fontSize: 15,
@@ -139,6 +136,7 @@ class _Info extends State<Info> {
     );
   }
 
+  /// Delegate for opening email address and https pages
   void _launchUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
