@@ -6,10 +6,6 @@ is a cross-platform (iOS & Android) framework.
 
 The project contains a custom shake detection algorithm for better and smoother experience.
 
-## Resources
-
-- [Trello board](https://trello.com/b/F2jXS39r/shaky-rps)
-
 ## Installation
 
 1) Get Flutter: https://flutter.dev/docs/get-started/install
