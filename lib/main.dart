@@ -9,6 +9,8 @@ import 'package:shaky_rps/ui/screen/game.dart';
 import 'package:shaky_rps/ui/screen/info.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
@@ -53,7 +55,7 @@ class _ShakingRpsAppState extends State<ShakingRpsApp>
     switch (state) {
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
-      case AppLifecycleState.suspending:
+      case AppLifecycleState.detached:
         widget.shaker.stop();
         break;
       case AppLifecycleState.resumed:
